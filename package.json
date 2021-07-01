@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "SA Takehome Project",
   "scripts": {
-    "start": "node app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon --inspect src/app.js"
   },
   "author": "Matt Mitchell",
   "license": "MIT",
@@ -12,5 +13,10 @@
     "express-handlebars": "^5.2.1",
     "path": "^0.12.7",
     "stripe": "^8.137.0"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "eslint": "^7.29.0",
+    "nodemon": "^2.0.9"
   }
 }
