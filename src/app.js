@@ -120,19 +120,27 @@ app.post('/update-intent', jsonParser, async function (req, res, next) {
 
 app.get('/success', async function (req, res) {
     const pi = req.query.pi;
-    const email = req.query.email;
     const charges = await stripe.charges.list({ payment_intent: pi });
     let charge;
-    for (ch of charges.data) {
-        if (ch.status === 'succeeded') {
-            charge = ch;
-            break;
+    if (charges.data && charges.data.length > 0) {
+        for (ch of charges.data) {
+            if (ch.status === 'succeeded') {
+                charge = ch;
+                break;
+            }
         }
+        let chargeAmount = charge.amount_captured / 100;
+        res.render('success', {
+            amount: chargeAmount,
+            email: charge.metadata.receipt_email,
+            chargeId: charge.id,
+            receiptUrl: charge.receipt_url,
+        });
+    } else {
+        res.render('success', {
+            error: 'Invalid payment information',
+        });
     }
-    res.render('success', {
-        charge,
-        email,
-    });
 });
 
 /**

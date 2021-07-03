@@ -1,6 +1,7 @@
 let stripe;
 let clientSecret;
 let cardElement;
+let payIntent;
 const initializeStripe = (pk, item) => {
     stripe = Stripe(pk);
     initPayment(item);
@@ -50,7 +51,8 @@ const initPayment = (item) => {
             const form = document.getElementById('payment-form');
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                completeCardPayment(stripe, cardElement, data.pi);
+                payIntent = data.pi;
+                completeCardPayment(stripe, cardElement, payIntent);
             });
         })
         .catch((err) => {
@@ -90,7 +92,7 @@ const completeCardPayment = async (stripe, cardElement, pi) => {
                     } else {
                         if (result.paymentIntent.status === 'succeeded')
                             window.location.replace(
-                                `/success?pi=${result.paymentIntent.id}&email=${email}`
+                                `/success?pi=${result.paymentIntent.id}`
                             );
                     }
                 });

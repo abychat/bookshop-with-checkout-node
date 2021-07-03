@@ -1,4 +1,5 @@
 <main>
+  {{#unless error}}
   <div class="mt-40 text-center text-success">
     <h1>
       <i class="far fa-check-circle"></i>
@@ -6,8 +7,18 @@
     </h1>
   </div>
   <div class="mt-40 text-center">
-    <div class="mt-20 text-center text-secondary border-placeholder">
-      Add details about the payment here! {{charge.id}} {{email}}
+    <div class="mt-20 text-center text-secondary border border-success rounded bg-white">
+      <div class="mt-20">
+        <h4 class="text-center font-weight-bold">Your payment of $ {{amount}} was successful!</h4>
+      </div>
+      <p class="text-center mt-5">Your Stripe charge id for your reference is : {{chargeId}}</p>
+      <p class="text-center">An email receipt has been sent to {{email}}</p>
+      <div class="mt-40 mb-20">
+        <p class="text-center font-weight-light">If you haven't received the email, you can also access the
+          receipt<a href={{receiptUrl}} target="_blank">
+            by visting this link</a></p>
+      </div>
     </div>
   </div>
+  {{/unless}}
 </main>
