@@ -1,4 +1,4 @@
-//require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -167,9 +167,9 @@ app.get('/success', async function (req, res) {
         let chargeAmount = charge.amount_captured / 100;
         res.render('success', {
             amount: chargeAmount,
-            email: charge.billing_details.email
-                ? charge.billing_details.email
-                : charge.metadata.receipt_email,
+            email: charge.metadata.receipt_email
+                ? charge.metadata.receipt_email
+                : charge.billing_details.email,
             chargeId: charge.id,
             receiptUrl: charge.receipt_url,
         });
