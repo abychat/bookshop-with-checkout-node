@@ -2,7 +2,7 @@
  * Clientside helper functions
  */
 
-$(document).ready(function () {
+$(document).ready(async function () {
     let amount;
     const amounts = document.getElementsByClassName('amount');
     // iterate through all "amount" elements and convert from cents to dollars
@@ -10,9 +10,26 @@ $(document).ready(function () {
         amount = amounts[i].getAttribute('data-amount') / 100;
         amounts[i].innerHTML = amount.toFixed(2);
     }
-    if (document.getElementById('card-element')) {
-        const cardElement = document.querySelector('#card-element');
-        initializeStripe(cardElement.dataset.pk, cardElement.dataset.item);
+    if (
+        document.getElementById('card-element') &&
+        document.getElementById('payment-request-button')
+    ) {
+        getPaymentConfig()
+            .then((paymentConfig) => {
+                const cardElement = document.querySelector('#card-element');
+                const prButtonElement = document.querySelector(
+                    '#payment-request-button'
+                );
+                initializeStripe(
+                    paymentConfig,
+                    cardElement.dataset.item,
+                    prButtonElement.dataset.curr
+                );
+            })
+            .catch((err) => {
+                console.error(err);
+                displayError(err);
+            });
     }
 });
 
@@ -32,8 +49,26 @@ const showSpinner = function (isLoading) {
 const displayError = function (error) {
     showSpinner(false);
     const errorMsg = document.querySelector('#card-error');
-    errorMsg.textContent = error;
+    errorMsg.textContent = error.message ? error.message : error;
     setTimeout(function () {
         errorMsg.textContent = '';
     }, 4000);
+};
+
+const getPaymentConfig = async () => {
+    let paymentConfig;
+    await fetch(`/payment/config`, {
+        method: 'GET',
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            paymentConfig = data;
+        })
+        .catch((err) => {
+            console.error(err);
+            throw err;
+        });
+    return paymentConfig;
 };

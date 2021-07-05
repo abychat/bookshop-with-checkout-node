@@ -1,10 +1,24 @@
 require('dotenv').config();
-const { STRIPE_PUBLISHED_API_KEY, STRIPE_SECRET_API_KEY } = process.env;
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const exphbs = require('express-handlebars');
-const { reset } = require('nodemon');
+
+const {
+    STRIPE_PUBLISHED_API_KEY,
+    STRIPE_SECRET_API_KEY,
+    STRIPE_ACCOUNT_COUNTRY,
+    SUPPORTED_CURRENCIES,
+    DEFAULT_CURRENCY,
+} = process.env;
+
+const config = {
+    pk: STRIPE_PUBLISHED_API_KEY,
+    country: STRIPE_ACCOUNT_COUNTRY,
+    defaultCurrency: DEFAULT_CURRENCY,
+    supportedCurrencies: SUPPORTED_CURRENCIES.split(','),
+};
+
 const stripe = require('stripe')(STRIPE_SECRET_API_KEY);
 
 const app = express();
@@ -53,12 +67,25 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
+app.get('/payment/config', function (req, res) {
+    res.json(config);
+});
+
 /**
  * Checkout route
  */
 app.get('/checkout', function (req, res) {
     const item = req.query.item;
-    let title, amount, error;
+    //Future-proofing for multi currency support
+    let currency = req.query.curr;
+    if (
+        !currency ||
+        (currency && config.supportedCurrencies.indexOf(currency) === -1)
+    ) {
+        currency = config.defaultCurrency;
+    }
+
+    let error;
     if (inventory.size < 3) {
         initInventory();
     }
@@ -72,8 +99,8 @@ app.get('/checkout', function (req, res) {
         title: book.title,
         amount: book.amount,
         itemId: item,
-        publishedKey: STRIPE_PUBLISHED_API_KEY,
         error: error,
+        currency,
     });
 });
 app.post('/init-payment', jsonParser, async function (req, res, next) {
@@ -112,10 +139,17 @@ app.post('/update-intent', jsonParser, async function (req, res, next) {
         } else {
             res.send({ clientSecret });
         }
-    } catch (error) {
+    } catch (err) {
         console.error(err);
         next(err);
     }
+});
+
+app.get('/item/:itemNumber', function (req, res) {
+    if (inventory.size < 3) {
+        initInventory();
+    }
+    res.send(inventory.get(req.params.itemNumber));
 });
 
 app.get('/success', async function (req, res) {
@@ -132,7 +166,9 @@ app.get('/success', async function (req, res) {
         let chargeAmount = charge.amount_captured / 100;
         res.render('success', {
             amount: chargeAmount,
-            email: charge.metadata.receipt_email,
+            email: charge.billing_details.email
+                ? charge.billing_details.email
+                : charge.metadata.receipt_email,
             chargeId: charge.id,
             receiptUrl: charge.receipt_url,
         });

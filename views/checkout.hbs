@@ -12,7 +12,7 @@
         Total due: $<span class='amount' data-amount='{{amount}}'></span>
       </div>
     </div>
-    <div id="payment-request-button">
+    <div id="payment-request-button" data-curr={{currency}}>
       <!-- A Stripe Element will be inserted here. -->
     </div>
     <div class='card box-shadow mt-40'>
@@ -23,8 +23,7 @@
             <input type='email' class='form-control' id='email' name='email' placeholder='you@email.com' required
               autocomplete="on" />
           </div>
-          <div class='mt-20 text-center text-secondary form-control' id='card-element' data-pk={{publishedKey}}
-            data-item='{{itemId}}'>
+          <div class='mt-20 text-center text-secondary form-control' id='card-element' data-item='{{itemId}}'>
           </div>
           <div class='mt-20'>
             <button type='submit' class='btn btn-lg btn-block btn-primary' disabled aria-disabled="true"
