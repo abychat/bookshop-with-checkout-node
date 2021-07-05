@@ -11,7 +11,6 @@ const initializeStripe = async (paymentConfig, item, currency) => {
         elements = stripe.elements();
         itemInfo = await getItemInfo(item);
         await initPayment(item, paymentConfig.country, currency);
-        //initPaymentRequest(item);
     } catch (err) {
         console.error(err);
         displayError(err);
@@ -46,11 +45,12 @@ const initPayment = async (item, country, currency) => {
         .then((response) => {
             return response.json();
         })
-        .then((data) => {
+        .then(async (data) => {
             payIntent = data.pi;
             clientSecret = data.pi.client_secret;
-            createCardElement();
-            createPaymentRequest(country, currency);
+            await createPaymentRequest(country, currency);
+            await createCardElement();
+            showPaymentMethods(true);
         })
         .catch((err) => {
             console.error(err);
@@ -70,8 +70,9 @@ const createCardElement = async () => {
                 : '';
         });
         const form = document.getElementById('payment-form');
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            showPaymentMethods(false);
             completeCardPayment(stripe, cardElement);
         });
     } catch (error) {
@@ -112,7 +113,7 @@ const completeCardPayment = async (stripe, cardElement) => {
         });
 };
 
-const createPaymentRequest = (country, currency) => {
+const createPaymentRequest = async (country, currency) => {
     const pr = stripe.paymentRequest({
         country,
         currency,
@@ -128,7 +129,7 @@ const createPaymentRequest = (country, currency) => {
     });
 
     // Check the availability of the Payment Request API first.
-    pr.canMakePayment().then(function (result) {
+    await pr.canMakePayment().then(function (result) {
         if (result) {
             prButton.mount('#payment-request-button');
         } else {
@@ -138,6 +139,7 @@ const createPaymentRequest = (country, currency) => {
     });
 
     pr.on('paymentmethod', async function (ev) {
+        showPaymentMethods(false);
         const data = {
             pi: payIntent,
             clientSecret,

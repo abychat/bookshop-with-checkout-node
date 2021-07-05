@@ -14,6 +14,7 @@ $(document).ready(async function () {
         document.getElementById('card-element') &&
         document.getElementById('payment-request-button')
     ) {
+        showPaymentMethods(false);
         getPaymentConfig()
             .then((paymentConfig) => {
                 const cardElement = document.querySelector('#card-element');
@@ -71,4 +72,27 @@ const getPaymentConfig = async () => {
             throw err;
         });
     return paymentConfig;
+};
+
+const showPaymentMethods = (hasLoaded) => {
+    const nodes = document.querySelectorAll('.spinner-grow');
+    if (!hasLoaded) {
+        nodes.forEach((node) => {
+            node.classList.remove('hidden');
+        });
+        document.querySelector('#payment-form').classList.add('hidden');
+        document
+            .querySelector('#payment-request-button')
+            .classList.add('hidden');
+        document.querySelector('#option-message').classList.add('hidden');
+    } else {
+        nodes.forEach((node) => {
+            node.classList.add('hidden');
+        });
+        document
+            .querySelector('#payment-request-button')
+            .classList.remove('hidden');
+        document.querySelector('#payment-form').classList.remove('hidden');
+        document.querySelector('#option-message').classList.remove('hidden');
+    }
 };

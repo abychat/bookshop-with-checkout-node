@@ -12,12 +12,25 @@
         Total due: $<span class='amount' data-amount='{{amount}}'></span>
       </div>
     </div>
-    <div id="payment-request-button" data-curr={{currency}}>
-      <!-- A Stripe Element will be inserted here. -->
+    <div class="text-center mt-20">
+      <div class="spinner-grow" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div id="payment-request-button" data-curr={{currency}} class="hidden mt-20">
+    </div>
+    <div class="mt-40 mb-10" id="option-message">
+      <p class="text-center font-weight-light">Or enter payment details below</p>
     </div>
     <div class='card box-shadow mt-40'>
       <div class='card-body'>
-        <form id='payment-form'>
+        <div class="text-center">
+          <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <form id='payment-form' class="hidden">
+
           <div>
             <label for='email'>Email address</label>
             <input type='email' class='form-control' id='email' name='email' placeholder='you@email.com' required
