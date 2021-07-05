@@ -97,9 +97,7 @@ const showPaymentMethods = (hasLoaded) => {
 };
 
 const showOptionsMessage = (hasMultipleOptions) => {
-    console.log('inside');
     if (hasMultipleOptions) {
-        console.log('inside 2');
         document.querySelector('#option-message').classList.remove('hidden');
     } else {
         document.querySelector('#option-message').classList.add('hidden');
