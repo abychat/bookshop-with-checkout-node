@@ -184,5 +184,5 @@ app.get('/success', async function (req, res) {
  * Start server
  */
 app.listen(PORT, () => {
-    console.log('Getting served on port' + PORT);
+    console.log('Getting served on port ' + PORT);
 });
