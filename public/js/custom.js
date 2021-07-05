@@ -14,6 +14,7 @@ $(document).ready(async function () {
         document.getElementById('card-element') &&
         document.getElementById('payment-request-button')
     ) {
+        showOptionsMessage(false);
         showPaymentMethods(false);
         getPaymentConfig()
             .then((paymentConfig) => {
@@ -84,7 +85,6 @@ const showPaymentMethods = (hasLoaded) => {
         document
             .querySelector('#payment-request-button')
             .classList.add('hidden');
-        document.querySelector('#option-message').classList.add('hidden');
     } else {
         nodes.forEach((node) => {
             node.classList.add('hidden');
@@ -93,6 +93,15 @@ const showPaymentMethods = (hasLoaded) => {
             .querySelector('#payment-request-button')
             .classList.remove('hidden');
         document.querySelector('#payment-form').classList.remove('hidden');
+    }
+};
+
+const showOptionsMessage = (hasMultipleOptions) => {
+    console.log('inside');
+    if (hasMultipleOptions) {
+        console.log('inside 2');
         document.querySelector('#option-message').classList.remove('hidden');
+    } else {
+        document.querySelector('#option-message').classList.add('hidden');
     }
 };

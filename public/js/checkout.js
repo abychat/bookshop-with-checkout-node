@@ -132,7 +132,9 @@ const createPaymentRequest = async (country, currency) => {
     await pr.canMakePayment().then(function (result) {
         if (result) {
             prButton.mount('#payment-request-button');
+            showOptionsMessage(true);
         } else {
+            showOptionsMessage(false);
             document.getElementById('payment-request-button').style.display =
                 'none';
         }
@@ -176,7 +178,7 @@ const createPaymentRequest = async (country, currency) => {
 };
 
 const updatePayIntent = async (data) => {
-    fetch('/update-intent', {
+    await fetch('/update-intent', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
