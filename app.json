@@ -1,0 +1,33 @@
+{
+    "name": "Stripe Bookshop with Checkout Demo",
+    "description":
+      "A ficitious book store that uses Stripe for checkout",
+    "repository": "https://github.com/abychat/bookshop-with-checkout-node   ",
+    "env": {
+      "STRIPE_PUBLISHED_API_KEY": {
+        "description":
+          "Your Stripe publishable key available on your dashboard. Use test keys for this demo.",
+        "required": true
+      },
+      "STRIPE_SECRET_API_KEY": {
+        "description":
+          "Your Stripe secret key available on your dashboard. Use test keys for this demo.",
+        "required": true
+      },
+      "STRIPE_ACCOUNT_COUNTRY": {
+        "description":
+          "The two letter country code for your stripe account for generating the Payment Request button",
+        "required": true
+      },
+      "SUPPORTED_CURRENCIES": {
+        "description":
+          "Supported Currencies - supply a comma separated list of all supported three letter currency codes in all lower case. eg. usd,eur,inr",
+        "required": true
+      },
+      "DEFAULT_CURRENCY": {
+        "description":
+          "Default Currency - three letter currency code for default currency in all lower case. Example - usd",
+        "required": true
+      }
+    }
+  }
