@@ -12,10 +12,14 @@
         Total due: $<span class='amount' data-amount='{{amount}}'></span>
       </div>
     </div>
-    <div class="text-center mt-20">
+    <div class="text-center mt-20" id="pr-spinner">
       <div class="spinner-grow" role="status">
         <span class="sr-only">Loading...</span>
       </div>
+    </div>
+    <div id="pr-support-message" class="hidden mt-20 font-weight-light text-muted text-center">
+      <p><small><i class="fa fa-info-circle" aria-hidden="true"></i> Digital wallet services not supported or you don't
+          have any saved cards</small></p>
     </div>
     <div id="payment-request-button" data-curr={{currency}} class="hidden mt-20">
     </div>
@@ -25,7 +29,7 @@
     <div class='card box-shadow mt-40'>
       <div class='card-body'>
         <div class="text-center">
-          <div class="spinner-grow text-primary" role="status">
+          <div class="spinner-grow text-primary" role="status" id="pc-spinner">
             <span class="sr-only">Loading...</span>
           </div>
         </div>

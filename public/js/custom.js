@@ -1,7 +1,13 @@
 /**
  * Clientside helper functions
  */
-
+const toggleElementVisibility = (isVisible, elementName) => {
+    if (isVisible) {
+        document.getElementById(elementName).classList.remove('hidden');
+    } else {
+        document.getElementById(elementName).classList.add('hidden');
+    }
+};
 $(document).ready(async function () {
     let amount;
     const amounts = document.getElementsByClassName('amount');
@@ -35,21 +41,10 @@ $(document).ready(async function () {
     }
 });
 
-const showSpinner = function (isLoading) {
-    if (isLoading) {
-        // Disable the button and show a spinner
-        document.querySelector('#pay-button').disabled = true;
-        document.querySelector('.spinner-border').classList.remove('hidden');
-        document.querySelector('#button-text').classList.add('hidden');
-    } else {
-        document.querySelector('button').disabled = false;
-        document.querySelector('.spinner-border').classList.add('hidden');
-        document.querySelector('#button-text').classList.remove('hidden');
-    }
-};
+let prSupportedFlag = false;
 
 const displayError = function (error) {
-    showSpinner(false);
+    showPaymentMethods(true);
     const errorMsg = document.querySelector('#card-error');
     errorMsg.textContent = error.message ? error.message : error;
     setTimeout(function () {
@@ -76,19 +71,20 @@ const getPaymentConfig = async () => {
 };
 
 const showPaymentMethods = (hasLoaded) => {
-    const nodes = document.querySelectorAll('.spinner-grow');
     if (!hasLoaded) {
-        nodes.forEach((node) => {
-            node.classList.remove('hidden');
-        });
+        if (prSupportedFlag) {
+            toggleElementVisibility(true, 'pr-spinner');
+        }
+        toggleElementVisibility(true, 'pc-spinner');
         document.querySelector('#payment-form').classList.add('hidden');
         document
             .querySelector('#payment-request-button')
             .classList.add('hidden');
     } else {
-        nodes.forEach((node) => {
-            node.classList.add('hidden');
-        });
+        if (prSupportedFlag) {
+            toggleElementVisibility(false, 'pr-spinner');
+        }
+        toggleElementVisibility(false, 'pc-spinner');
         document
             .querySelector('#payment-request-button')
             .classList.remove('hidden');
@@ -101,5 +97,13 @@ const showOptionsMessage = (hasMultipleOptions) => {
         document.querySelector('#option-message').classList.remove('hidden');
     } else {
         document.querySelector('#option-message').classList.add('hidden');
+    }
+};
+
+const setPaymentRequestFlag = (isSupported) => {
+    if (isSupported) {
+        prSupportedFlag = true;
+    } else {
+        prSupportedFlag = false;
     }
 };

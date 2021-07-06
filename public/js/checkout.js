@@ -82,7 +82,6 @@ const createCardElement = async () => {
 };
 
 const completeCardPayment = async (stripe, cardElement) => {
-    showSpinner(true);
     const email = document.getElementById('email').value;
     const data = {
         pi: payIntent.id,
@@ -131,10 +130,14 @@ const createPaymentRequest = async (country, currency) => {
     // Check the availability of the Payment Request API first.
     await pr.canMakePayment().then(function (result) {
         if (result) {
+            setPaymentRequestFlag(true);
             prButton.mount('#payment-request-button');
             showOptionsMessage(true);
         } else {
             showOptionsMessage(false);
+            setPaymentRequestFlag(false);
+            toggleElementVisibility(true, 'pr-support-message');
+            toggleElementVisibility(false, 'pr-spinner');
             document.getElementById('payment-request-button').style.display =
                 'none';
         }
