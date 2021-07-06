@@ -1,7 +1,7 @@
 {
-  "name": "sa-takehome-project-node",
+  "name": "bookshop-with-checkout-node",
   "version": "1.0.0",
-  "description": "SA Takehome Project",
+  "description": "AC's Bookshop",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon --inspect src/app.js"

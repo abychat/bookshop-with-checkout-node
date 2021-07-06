@@ -13,7 +13,10 @@ const initializeStripe = async (paymentConfig, item, currency) => {
         await initPayment(item, paymentConfig.country, currency);
     } catch (err) {
         console.error(err);
-        displayError(err);
+        disablePaymentUI();
+        displayError(
+            'There was an error with the Checkout process. Please try again.'
+        );
     }
 };
 
@@ -82,102 +85,116 @@ const createCardElement = async () => {
 };
 
 const completeCardPayment = async (stripe, cardElement) => {
-    const email = document.getElementById('email').value;
-    const data = {
-        pi: payIntent.id,
-        clientSecret,
-        email,
-    };
-    await updatePayIntent(data);
+    try {
+        const email = document.getElementById('email').value;
+        const data = {
+            pi: payIntent.id,
+            clientSecret,
+            email,
+        };
+        await updatePayIntent(data);
 
-    stripe
-        .confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: cardElement,
-            },
-        })
-        .then((result) => {
-            if (result.error) {
-                displayError(result.error.message);
-            } else {
-                if (result.paymentIntent.status === 'succeeded')
-                    window.location.replace(
-                        `/success?pi=${result.paymentIntent.id}`
-                    );
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-            throw err;
-        });
+        stripe
+            .confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                },
+            })
+            .then((result) => {
+                if (result.error) {
+                    displayError(result.error.message);
+                } else {
+                    if (result.paymentIntent.status === 'succeeded')
+                        window.location.replace(
+                            `/success?pi=${result.paymentIntent.id}`
+                        );
+                }
+            })
+            .catch((err) => {
+                console.error(err.message);
+                throw err;
+            });
+    } catch (error) {
+        console.error(error.message);
+        displayError(
+            'There was an error processing your payment. Please try again.'
+        );
+        showPaymentMethods(true);
+    }
 };
 
 const createPaymentRequest = async (country, currency) => {
-    const pr = stripe.paymentRequest({
-        country,
-        currency,
-        total: {
-            label: 'Total Amount',
-            amount: itemInfo.amount,
-        },
-        requestPayerName: true,
-        requestPayerEmail: true,
-    });
-    const prButton = elements.create('paymentRequestButton', {
-        paymentRequest: pr,
-    });
+    try {
+        const pr = stripe.paymentRequest({
+            country,
+            currency,
+            total: {
+                label: 'Total Amount',
+                amount: itemInfo.amount,
+            },
+            requestPayerName: true,
+            requestPayerEmail: true,
+        });
+        const prButton = elements.create('paymentRequestButton', {
+            paymentRequest: pr,
+        });
 
-    // Check the availability of the Payment Request API first.
-    await pr.canMakePayment().then(function (result) {
-        if (result) {
-            setPaymentRequestFlag(true);
-            prButton.mount('#payment-request-button');
-            showOptionsMessage(true);
-        } else {
-            showOptionsMessage(false);
-            setPaymentRequestFlag(false);
-            toggleElementVisibility(true, 'pr-support-message');
-            toggleElementVisibility(false, 'pr-spinner');
-            document.getElementById('payment-request-button').style.display =
-                'none';
-        }
-    });
+        // Check the availability of the Payment Request API first.
+        await pr.canMakePayment().then(function (result) {
+            if (result) {
+                setPaymentRequestFlag(true);
+                prButton.mount('#payment-request-button');
+                showOptionsMessage(true);
+            } else {
+                showOptionsMessage(false);
+                setPaymentRequestFlag(false);
+                toggleElementVisibility(true, 'pr-support-message');
+                toggleElementVisibility(false, 'pr-spinner');
+                document.getElementById(
+                    'payment-request-button'
+                ).style.display = 'none';
+            }
+        });
 
-    pr.on('paymentmethod', async function (ev) {
-        showPaymentMethods(false);
-        const data = {
-            pi: payIntent,
-            clientSecret,
-            email: ev.payerEmail,
-        };
-        // Confirm the PaymentIntent without handling potential next actions (yet).
-        const response = await stripe.confirmCardPayment(
-            clientSecret,
-            { payment_method: ev.paymentMethod.id },
-            { handleActions: false }
-        );
-        if (response.error) {
-            // Report to the browser that the payment failed.
-            ev.complete('fail');
-            displayError(
-                'Error processing payment' +
-                    '\n Please try another payment method'
+        pr.on('paymentmethod', async function (ev) {
+            showPaymentMethods(false);
+            const data = {
+                pi: payIntent,
+                clientSecret,
+                email: ev.payerEmail,
+            };
+            // Confirm the PaymentIntent without handling potential next actions (yet).
+            const response = await stripe.confirmCardPayment(
+                clientSecret,
+                { payment_method: ev.paymentMethod.id },
+                { handleActions: false }
             );
-        } else {
-            if (response.paymentIntent.status === 'succeeded') {
-                // Report to the browser that the confirmation was successful, prompting
-                // it to close the browser payment method collection interface.
-                ev.complete('success');
-                window.location.replace(
-                    `/success?pi=${response.paymentIntent.id}`
+            if (response.error) {
+                // Report to the browser that the payment failed.
+                ev.complete('fail');
+                displayError(
+                    'Error processing payment' +
+                        '\n Please try another payment method'
                 );
             } else {
-                displayError(
-                    'There was a problem processing your payment. Please try another payment method.'
-                );
+                if (response.paymentIntent.status === 'succeeded') {
+                    // Report to the browser that the confirmation was successful, prompting
+                    // it to close the browser payment method collection interface.
+                    ev.complete('success');
+                    window.location.replace(
+                        `/success?pi=${response.paymentIntent.id}`
+                    );
+                } else {
+                    displayError(
+                        'There was a problem processing your payment. Please try another payment method.'
+                    );
+                }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error(error.message);
+        throw error;
+    }
 };
 
 const updatePayIntent = async (data) => {

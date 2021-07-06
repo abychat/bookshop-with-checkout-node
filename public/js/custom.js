@@ -10,34 +10,49 @@ const toggleElementVisibility = (isVisible, elementName) => {
 };
 $(document).ready(async function () {
     let amount;
-    const amounts = document.getElementsByClassName('amount');
-    // iterate through all "amount" elements and convert from cents to dollars
-    for (var i = 0; i < amounts.length; i++) {
-        amount = amounts[i].getAttribute('data-amount') / 100;
-        amounts[i].innerHTML = amount.toFixed(2);
-    }
-    if (
-        document.getElementById('card-element') &&
-        document.getElementById('payment-request-button')
-    ) {
-        showOptionsMessage(false);
-        showPaymentMethods(false);
-        getPaymentConfig()
-            .then((paymentConfig) => {
-                const cardElement = document.querySelector('#card-element');
-                const prButtonElement = document.querySelector(
-                    '#payment-request-button'
-                );
-                initializeStripe(
-                    paymentConfig,
-                    cardElement.dataset.item,
-                    prButtonElement.dataset.curr
-                );
-            })
-            .catch((err) => {
-                console.error(err);
-                displayError(err);
-            });
+    try {
+        const amounts = document.getElementsByClassName('amount');
+        // iterate through all "amount" elements and convert from cents to dollars
+        for (var i = 0; i < amounts.length; i++) {
+            amount = amounts[i].getAttribute('data-amount') / 100;
+            amounts[i].innerHTML = amount.toFixed(2);
+        }
+        const serverError = document.getElementById('server-error')
+            ? document.getElementById('server-error').textContent
+            : undefined;
+        if (
+            document.getElementById('card-element') &&
+            document.getElementById('payment-request-button') &&
+            !serverError
+        ) {
+            showOptionsMessage(false);
+            showPaymentMethods(false);
+            getPaymentConfig()
+                .then((paymentConfig) => {
+                    const cardElement = document.querySelector('#card-element');
+                    const prButtonElement = document.querySelector(
+                        '#payment-request-button'
+                    );
+                    initializeStripe(
+                        paymentConfig,
+                        cardElement.dataset.item,
+                        prButtonElement.dataset.curr
+                    );
+                })
+                .catch((err) => {
+                    console.error(err);
+                    displayError(
+                        'Error initializing payment methods. Please try again.'
+                    );
+                    disablePaymentUI();
+                });
+        } else {
+            disablePaymentUI();
+        }
+    } catch (error) {
+        console.error(error);
+        displayError('Error initializing payment methods. Please try again.');
+        disablePaymentUI();
     }
 });
 
@@ -46,9 +61,11 @@ let prSupportedFlag = false;
 const displayError = function (error) {
     showPaymentMethods(true);
     const errorMsg = document.querySelector('#card-error');
+    errorMsg.classList.add('alert', 'alert-danger', 'mt-20');
     errorMsg.textContent = error.message ? error.message : error;
     setTimeout(function () {
         errorMsg.textContent = '';
+        errorMsg.classList.remove('alert', 'alert-danger', 'mt-20');
     }, 4000);
 };
 
@@ -106,4 +123,11 @@ const setPaymentRequestFlag = (isSupported) => {
     } else {
         prSupportedFlag = false;
     }
+};
+
+const disablePaymentUI = () => {
+    showOptionsMessage(false);
+    showPaymentMethods(true);
+    setPaymentRequestFlag(false);
+    toggleElementVisibility(false, 'pr-spinner');
 };

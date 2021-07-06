@@ -86,23 +86,27 @@ app.get('/checkout', function (req, res) {
         currency = config.defaultCurrency;
     }
 
-    let error;
     if (inventory.size < 3) {
         initInventory();
     }
     const book = inventory.get(item);
-    /**
-     * Sending the Published API key as an expression to the checkout template
-     * which in turn adds it to the card element as a data attribute so any JS function can access it
-     * without the need to hard code the API key in templates and for easier updates
-     **/
-    res.render('checkout', {
-        title: book.title,
-        amount: book.amount,
-        itemId: item,
-        error: error,
-        currency,
-    });
+    if (book) {
+        res.render('checkout', {
+            title: book.title,
+            amount: book.amount,
+            itemId: item,
+            currency,
+        });
+    } else {
+        console.error(`Invalid Book Id ${item} supplied`);
+        res.render('checkout', {
+            title: 'Unknown book',
+            amount: 0,
+            itemId: item,
+            error: 'Invalid book selected',
+            currency,
+        });
+    }
 });
 app.post('/init-payment', jsonParser, async function (req, res, next) {
     try {
@@ -125,7 +129,7 @@ app.post('/init-payment', jsonParser, async function (req, res, next) {
         }
     } catch (err) {
         console.error(err);
-        next(err);
+        res.status(500).json(JSON.stringify(err));
     }
 });
 
@@ -142,7 +146,7 @@ app.post('/update-intent', jsonParser, async function (req, res, next) {
         }
     } catch (err) {
         console.error(err);
-        next(err);
+        res.status(500).json(JSON.stringify(err));
     }
 });
 
@@ -150,33 +154,44 @@ app.get('/item/:itemNumber', function (req, res) {
     if (inventory.size < 3) {
         initInventory();
     }
-    res.send(inventory.get(req.params.itemNumber));
+    const book = inventory.get(req.params.itemNumber);
+    if (book) {
+        res.send(book);
+    } else {
+        const error = new Error('Invalid book item id supplied');
+        res.status(500).json(error.message);
+    }
 });
 
 app.get('/success', async function (req, res) {
-    const pi = req.query.pi;
-    const charges = await stripe.charges.list({ payment_intent: pi });
-    let charge;
-    if (charges.data && charges.data.length > 0) {
-        for (ch of charges.data) {
-            if (ch.status === 'succeeded') {
-                charge = ch;
-                break;
+    try {
+        const pi = req.query.pi;
+        const charges = await stripe.charges.list({ payment_intent: pi });
+        let charge;
+        if (charges.data && charges.data.length > 0) {
+            for (ch of charges.data) {
+                if (ch.status === 'succeeded') {
+                    charge = ch;
+                    break;
+                }
             }
+            let chargeAmount = charge.amount_captured / 100;
+            res.render('success', {
+                amount: chargeAmount,
+                email: charge.metadata.receipt_email
+                    ? charge.metadata.receipt_email
+                    : charge.billing_details.email,
+                chargeId: charge.id,
+                receiptUrl: charge.receipt_url,
+            });
+        } else {
+            res.render('success', {
+                error: 'Invalid payment information',
+            });
         }
-        let chargeAmount = charge.amount_captured / 100;
-        res.render('success', {
-            amount: chargeAmount,
-            email: charge.metadata.receipt_email
-                ? charge.metadata.receipt_email
-                : charge.billing_details.email,
-            chargeId: charge.id,
-            receiptUrl: charge.receipt_url,
-        });
-    } else {
-        res.render('success', {
-            error: 'Invalid payment information',
-        });
+    } catch (error) {
+        console.error(err);
+        res.status(500).json(JSON.stringify(err));
     }
 });
 
