@@ -5,6 +5,14 @@ let payIntent;
 let elements;
 let itemInfo;
 
+/**
+ * This function initializes Stripe,
+ * gets the info for the item so as to not depend on client side values and
+ * initializes and mounts the Stripe Elements for card and payment request button
+ * @param {Object} paymentConfig - Client side config variables
+ * @param {String} item - The numerical id of the item being checked out
+ * @param {String} currency - The currency of the payment
+ */
 const initializeStripe = async (paymentConfig, item, currency) => {
     try {
         stripe = Stripe(paymentConfig.pk);
@@ -20,6 +28,10 @@ const initializeStripe = async (paymentConfig, item, currency) => {
     }
 };
 
+/**
+ * Function to get the information about a book from the server
+ * @param {String} item - The numerical id of the item being checked out
+ */
 const getItemInfo = async (item) => {
     fetch(`/item/${item}`, {
         method: 'GET',
@@ -36,6 +48,12 @@ const getItemInfo = async (item) => {
         });
 };
 
+/**
+ * Function to request a new PaymentIntent from the server
+ * @param {String} item - The numerical id of the item being checked out
+ * @param {String} country - Stripe account country
+ * @param {String} currency - The currency of the payment
+ */
 const initPayment = async (item, country, currency) => {
     const data = { item };
     await fetch('/init-payment', {
@@ -49,6 +67,7 @@ const initPayment = async (item, country, currency) => {
             return response.json();
         })
         .then(async (data) => {
+            //If the request is successful, create the payment request button and the card element
             payIntent = data.pi;
             clientSecret = data.pi.client_secret;
             await createPaymentRequest(country, currency);
@@ -61,6 +80,9 @@ const initPayment = async (item, country, currency) => {
         });
 };
 
+/**
+ * Function to create and mount the card Stripe Element
+ */
 const createCardElement = async () => {
     try {
         cardElement = elements.create('card');
@@ -73,6 +95,8 @@ const createCardElement = async () => {
                 : '';
         });
         const form = document.getElementById('payment-form');
+
+        //Attach a listener to the form that completes the card payment when the user clicks the Pay button
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             showPaymentMethods(false);
@@ -84,6 +108,13 @@ const createCardElement = async () => {
     }
 };
 
+/**
+ * Function to complete the card payment and update email details
+ * in the PaymentIntent when a user uses a card to pay
+ * @param {Object} - Stripe client
+ * @param {Object} - Instance of the card element
+ */
+
 const completeCardPayment = async (stripe, cardElement) => {
     try {
         const email = document.getElementById('email').value;
@@ -92,8 +123,10 @@ const completeCardPayment = async (stripe, cardElement) => {
             clientSecret,
             email,
         };
+        //Update the PaymentIntent to reflect the user's email
         await updatePayIntent(data);
 
+        //Confirm the card payment
         stripe
             .confirmCardPayment(clientSecret, {
                 payment_method: {
@@ -104,10 +137,12 @@ const completeCardPayment = async (stripe, cardElement) => {
                 if (result.error) {
                     displayError(result.error.message);
                 } else {
-                    if (result.paymentIntent.status === 'succeeded')
+                    //Redirect to the Success page if the payment succeeded
+                    if (result.paymentIntent.status === 'succeeded') {
                         window.location.replace(
                             `/success?pi=${result.paymentIntent.id}`
                         );
+                    }
                 }
             })
             .catch((err) => {
@@ -123,6 +158,12 @@ const completeCardPayment = async (stripe, cardElement) => {
     }
 };
 
+/**
+ * Function to create and mount the PaymentRequest button if the browser
+ * supports the Payment Request API
+ * @param {String} country - Stripe account country
+ * @param {String} currency - Three letter currency code
+ */
 const createPaymentRequest = async (country, currency) => {
     try {
         const pr = stripe.paymentRequest({
@@ -155,7 +196,7 @@ const createPaymentRequest = async (country, currency) => {
                 ).style.display = 'none';
             }
         });
-
+        //Confirm the card payments and hide the buttons when a user submits a payment
         pr.on('paymentmethod', async function (ev) {
             showPaymentMethods(false);
             const data = {
@@ -163,7 +204,6 @@ const createPaymentRequest = async (country, currency) => {
                 clientSecret,
                 email: ev.payerEmail,
             };
-            // Confirm the PaymentIntent without handling potential next actions (yet).
             const response = await stripe.confirmCardPayment(
                 clientSecret,
                 { payment_method: ev.paymentMethod.id },
@@ -181,6 +221,7 @@ const createPaymentRequest = async (country, currency) => {
                     // Report to the browser that the confirmation was successful, prompting
                     // it to close the browser payment method collection interface.
                     ev.complete('success');
+                    //Redirect the user to the Success page
                     window.location.replace(
                         `/success?pi=${response.paymentIntent.id}`
                     );
@@ -197,6 +238,10 @@ const createPaymentRequest = async (country, currency) => {
     }
 };
 
+/**
+ * Update the PaymentIntent
+ * @param {Object} data - Data to update the PaymentIntent which include the PaymentIntent id, client secret and details to be updated
+ */
 const updatePayIntent = async (data) => {
     await fetch('/update-intent', {
         method: 'POST',

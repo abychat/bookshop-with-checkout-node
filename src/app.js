@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const exphbs = require('express-handlebars');
 
+//Get all the config values from the .env file
 const {
     STRIPE_PUBLISHED_API_KEY,
     STRIPE_SECRET_API_KEY,
@@ -13,6 +14,7 @@ const {
     PORT,
 } = process.env;
 
+//Client side config details to be returned via the API
 const config = {
     pk: STRIPE_PUBLISHED_API_KEY,
     country: STRIPE_ACCOUNT_COUNTRY,
@@ -25,8 +27,6 @@ const stripe = require('stripe')(STRIPE_SECRET_API_KEY);
 const app = express();
 
 const jsonParser = bodyParser.json();
-
-const CURRENCIES = { USD: 'usd', AUD: 'aud', CAD: 'cad', DEFAULT: 'usd' };
 
 const inventory = new Map();
 
@@ -68,6 +68,7 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
+//Config route to return client side config
 app.get('/payment/config', function (req, res) {
     res.json(config);
 });
@@ -108,13 +109,15 @@ app.get('/checkout', function (req, res) {
         });
     }
 });
+
+//Route to create and return a new payment intent
 app.post('/init-payment', jsonParser, async function (req, res, next) {
     try {
         let { item, currency } = req.body;
         if (item) {
             if (inventory.get(item).amount) {
                 if (!currency) {
-                    currency = CURRENCIES.DEFAULT;
+                    currency = DEFAULT_CURRENCY;
                 }
                 const paymentIntent = await stripe.paymentIntents.create({
                     amount: inventory.get(item).amount,
@@ -133,6 +136,10 @@ app.post('/init-payment', jsonParser, async function (req, res, next) {
     }
 });
 
+/**
+ * Route to update an existing payment intent with the email supplied in the checkout form
+ * and deliver an email receipt to the email supplied
+ */
 app.post('/update-intent', jsonParser, async function (req, res, next) {
     try {
         let { pi, clientSecret, email } = req.body;
@@ -150,6 +157,9 @@ app.post('/update-intent', jsonParser, async function (req, res, next) {
     }
 });
 
+/**
+ * Route to get details of a specific item
+ */
 app.get('/item/:itemNumber', function (req, res) {
     if (inventory.size < 3) {
         initInventory();
@@ -163,11 +173,17 @@ app.get('/item/:itemNumber', function (req, res) {
     }
 });
 
+/**
+ * Route for showing the success page.
+ */
 app.get('/success', async function (req, res) {
     try {
         const pi = req.query.pi;
+
+        //Get a list of all the charges for the paymentIntent supplied in the request
         const charges = await stripe.charges.list({ payment_intent: pi });
         let charge;
+        //Look for the successful charge. In this case we are expecting only one successful charge.
         if (charges.data && charges.data.length > 0) {
             for (ch of charges.data) {
                 if (ch.status === 'succeeded') {
@@ -176,6 +192,12 @@ app.get('/success', async function (req, res) {
                 }
             }
             let chargeAmount = charge.amount_captured / 100;
+
+            /**
+             * Render the success page with the charge id, email and receipt URL.
+             * Depending on the paymentMethod - card | paymentRequest, the user's email
+             * is retrieved either from the payment intent's metadata or billing details
+             */
             res.render('success', {
                 amount: chargeAmount,
                 email: charge.metadata.receipt_email

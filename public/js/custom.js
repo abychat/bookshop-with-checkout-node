@@ -17,6 +17,7 @@ $(document).ready(async function () {
             amount = amounts[i].getAttribute('data-amount') / 100;
             amounts[i].innerHTML = amount.toFixed(2);
         }
+        //Check if the 'error' handlebar expression has been rendered indicating that the server responded with an error
         const serverError = document.getElementById('server-error')
             ? document.getElementById('server-error').textContent
             : undefined;
@@ -25,8 +26,10 @@ $(document).ready(async function () {
             document.getElementById('payment-request-button') &&
             !serverError
         ) {
+            //Control the UI by hiding the Stripe Elements and static messages while they are loaded
             showOptionsMessage(false);
             showPaymentMethods(false);
+            //Get the config values from the server and initialize Stripe, as well as the different payment methods
             getPaymentConfig()
                 .then((paymentConfig) => {
                     const cardElement = document.querySelector('#card-element');
@@ -55,9 +58,10 @@ $(document).ready(async function () {
         disablePaymentUI();
     }
 });
-
+//Boolean flag to indicate whether the browser supports the PaymentRequest API
 let prSupportedFlag = false;
 
+//Function to display error messages on the checkout page
 const displayError = function (error) {
     showPaymentMethods(true);
     const errorMsg = document.querySelector('#card-error');
@@ -69,6 +73,7 @@ const displayError = function (error) {
     }, 4000);
 };
 
+//Function to get client side config variables from the server
 const getPaymentConfig = async () => {
     let paymentConfig;
     await fetch(`/payment/config`, {
@@ -87,6 +92,7 @@ const getPaymentConfig = async () => {
     return paymentConfig;
 };
 
+//Function to control the visibility of the payment methods
 const showPaymentMethods = (hasLoaded) => {
     if (!hasLoaded) {
         if (prSupportedFlag) {
@@ -109,6 +115,7 @@ const showPaymentMethods = (hasLoaded) => {
     }
 };
 
+//Function to show a message that informs users of the availability of multiple payment methods based on the availability of the PaymentRequest API
 const showOptionsMessage = (hasMultipleOptions) => {
     if (hasMultipleOptions) {
         document.querySelector('#option-message').classList.remove('hidden');
@@ -117,6 +124,7 @@ const showOptionsMessage = (hasMultipleOptions) => {
     }
 };
 
+//Setter for the Payment Request support flag
 const setPaymentRequestFlag = (isSupported) => {
     if (isSupported) {
         prSupportedFlag = true;
@@ -125,6 +133,7 @@ const setPaymentRequestFlag = (isSupported) => {
     }
 };
 
+//Function to control UI elements if payment methods and spinners need to be disabled/hidden, especially in the case of errors
 const disablePaymentUI = () => {
     showOptionsMessage(false);
     showPaymentMethods(true);
