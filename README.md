@@ -43,7 +43,7 @@ The following sections on this page list the options for deploying and using the
 
 The following steps will guide you through the setup of this app on your local machine
 
-1. Clone this repostory using the following command on the terminal of your choice
+1. Clone this repository using the following command on the terminal of your choice
 
 ```
 git clone https://github.com/abychat/bookshop-with-checkout-node.git
@@ -88,7 +88,7 @@ Web Interface                 http://127.0.0.1:3000
 Forwarding                    http://92832de0.ngrok.io -> localhost:80
 Forwarding                    https://92832de0.ngrok.io -> localhost:80
 
-Connnections                  ttl     opn     rt1     rt5     p50     p90
+Connections                  ttl     opn     rt1     rt5     p50     p90
                               0       0       0.00    0.00    0.00    0.00
 ```
 
