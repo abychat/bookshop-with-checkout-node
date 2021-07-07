@@ -119,6 +119,7 @@ app.post('/init-payment', jsonParser, async function (req, res, next) {
                 if (!currency) {
                     currency = DEFAULT_CURRENCY;
                 }
+                //Get the price of the item from the server and not the request so the right price is charged even if the request is tampered
                 const paymentIntent = await stripe.paymentIntents.create({
                     amount: inventory.get(item).amount,
                     currency,

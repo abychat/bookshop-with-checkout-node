@@ -17,6 +17,7 @@ const initializeStripe = async (paymentConfig, item, currency) => {
     try {
         stripe = Stripe(paymentConfig.pk);
         elements = stripe.elements();
+        //Get the price and other details of the item from the server so that the correct prices are received even if user's tamper the client
         itemInfo = await getItemInfo(item);
         await initPayment(item, paymentConfig.country, currency);
     } catch (err) {
