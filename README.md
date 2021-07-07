@@ -37,7 +37,7 @@ The following sections on this page list the options for deploying and using the
 
 ![image](https://user-images.githubusercontent.com/7586106/124688613-eb092e80-de8b-11eb-9eca-f4253979507b.png)
 
-4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay). Since this is a demo app, you can skip step #2 (Download Verification File) when you click 'Add a new domain' on the [Apple Pay tab](https://dashboard.stripe.com/settings/payments/apple_pay) of your Stripe Dashboard.
+4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay). Since this is a demo app, you can skip step #2 (Download Verification File) on the screen that appears when you click 'Add a new domain' on the [Apple Pay tab](https://dashboard.stripe.com/settings/payments/apple_pay) of your Stripe Dashboard.
 
 ### OPTION 2 - Running the App Locally
 
@@ -92,7 +92,7 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
                               0       0       0.00    0.00    0.00    0.00
 ```
 
-7. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
+7. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay). Since this is a demo app, you can skip step #2 (Download Verification File) on the screen that appears when you click 'Add a new domain' on the [Apple Pay tab](https://dashboard.stripe.com/settings/payments/apple_pay) of your Stripe Dashboard.
 
 8. Navigate to http://localhost: <PORT> (port specified in .env) or the ngrok secure URL on your browser to verify that the application is up and running.
 
