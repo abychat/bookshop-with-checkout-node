@@ -1,7 +1,7 @@
 {
     "name": "Stripe Bookshop with Checkout Demo",
     "description":
-      "A ficitious book store that uses Stripe for checkout",
+      "A fictitious book store that uses Stripe for checkout",
     "repository": "https://github.com/abychat/bookshop-with-checkout-node   ",
     "env": {
       "STRIPE_PUBLISHED_API_KEY": {
