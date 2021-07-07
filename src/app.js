@@ -146,7 +146,7 @@ app.post('/update-intent', jsonParser, async function (req, res, next) {
         let { pi, clientSecret, email } = req.body;
         if (pi && email) {
             const paymentIntent = await stripe.paymentIntents.update(pi, {
-                metadata: { receipt_email: email },
+                receipt_email: email,
             });
             res.send({ clientSecret: paymentIntent.client_secret });
         } else {
@@ -201,8 +201,8 @@ app.get('/success', async function (req, res) {
              */
             res.render('success', {
                 amount: chargeAmount,
-                email: charge.metadata.receipt_email
-                    ? charge.metadata.receipt_email
+                email: charge.receipt_email
+                    ? charge.receipt_email
                     : charge.billing_details.email,
                 chargeId: charge.id,
                 receiptUrl: charge.receipt_url,
