@@ -6,6 +6,8 @@ This is a node.js app that uses express.js, handlebars.js and Stripe Elements to
 
 A live version of the site in test mode is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
 
+Please use [Stripe test data](https://stripe.com/docs/testing#cards) to experience the checkout process.
+
 The following sections on this page list the options for deploying and using the app. Checkout the Github generated table of contents in the header of this README file to quickly navigate to different sections of the document.
 
 ![image](https://user-images.githubusercontent.com/7586106/124688183-33741c80-de8b-11eb-8d36-ec33ef93ea96.png)
@@ -117,9 +119,10 @@ One small challenge I faced while developing the app was trying to fetch the cha
 
 I am sure security and reliability is top of mind when a business of any size is dealing with online payments. As I was designing the app, I wasn't worried about the security of the transaction once Stripe takes over but did find myself thinking about scenarios where the app itself has to safeguard against tampering of data (item details, prices etc), repeated payment attempts etc. To this end I ensured that the payment and item details are always fetched from the server, and are verified again when a payment is attempted. Additionally, client side controls make sure that users cannot make repeated attempts till an existing payment attempt is complete or if there is a server side error. I would like to get a deeper understanding about all the different types of errors that can surface when using Stripe and make the error handling in the code more specific to those errors. 
     
-I would also incorporate global payment methods like IBAN, iDEAL etc using Stripe Elements.
+I would also incorporate global payment methods like IBAN, iDEAL etc using Stripe Elements. I would also look at collecting shipping details and tying this application to an order management/logistics system.
 
 I would also look at using the Customer API to track customer profiles, billing information and payments. I though this would especially be useful when tracking any failed payments and avoiding creating multiple duplicate PaymentIntents for the same customer trying to pay for the same order. It would also help enable an authenticated experience for customers on the site. The Product and Price APIs would also be useful for managing a product catalog for the bookstore but at the same time I was thinking about how Stripe would integrate with other Product masters that have complex, multi currency, global price books. 
     
     
-DISCLAIMER - This is a learning/demo app and has been tested with [Stripe test data](https://stripe.com/docs/testing#cards) on Google Chrome, Safari, Microsoft Edge and Firefox. Do not deploy this app for use as a live site without a detailed code review and comprehensive testing.
+###DISCLAIMER
+This is a learning/demo app and has been tested with [Stripe test data](https://stripe.com/docs/testing#cards) on Google Chrome, Safari, Microsoft Edge and Firefox. Do not deploy this app for use as a live site without a detailed code review and comprehensive testing.
