@@ -8,7 +8,7 @@ A live version of the site in test mode is deployed at - https://ac-bookshop-w-c
 
 Please use [Stripe test data](https://stripe.com/docs/testing#cards) to experience the checkout process.
 
-The following sections on this page list the options for deploying and using the app. Checkout the handy Github generated table of contents in the header of this README file to quickly navigate to different sections of the document.
+The following sections on this page list the options for deploying and using the app as well as my experience integrating Stripe. Checkout the handy Github generated table of contents in the header of this README file to quickly navigate to different sections of the document.
 
 ![image](https://user-images.githubusercontent.com/7586106/124688183-33741c80-de8b-11eb-8d36-ec33ef93ea96.png)
 
