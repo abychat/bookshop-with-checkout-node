@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a node.js app that uses express.js, handelbars.js and Stripe Elements to host a fictitious bookshop wesbite. Users visiting the bookshop can browse all available books and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
+This is a node.js app that uses express.js, handlebars.js and Stripe Elements to host a fictitious bookshop website. Users visiting the bookshop can browse all available books and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
 
 A live version of the site is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
 
@@ -10,19 +10,18 @@ The following sections on this page list the options for deploying and using the
 
 ![image](https://user-images.githubusercontent.com/7586106/124688183-33741c80-de8b-11eb-8d36-ec33ef93ea96.png)
 
-
 ## Running the App
 
 ### Prerequisites
 
-* A modern browser like Chrome, Microsoft Edge, Firefox or Safari
-* A [free Stripe account](https://dashboard.stripe.com/register) to be able to process payments
-* [Node.js >=10.0.0](https://nodejs.org/en/download/) and [Git](https://git-scm.com/downloads) for running the app locally
-* The PaymentRequest Stripe Element requires that the application be served over https both in development and production.
-  + You can install and use [ngrok](https://dashboard.ngrok.com/signup) for enabling a secure connection to your local server.
-  + Apple Pay requires the [verification and registration of your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
-    - You can create a free account and easily deploy your app to [Heroku](https://signup.heroku.com/) to get a dedicated secure domain.
-    - Alternatively, ngrok offers a paid version which will allow you to have to a dedicated secure domain that can be verified and registered to test the Apple Pay intergration during development.
+-   A modern browser like Chrome, Microsoft Edge, Firefox or Safari
+-   A [free Stripe account](https://dashboard.stripe.com/register) to be able to process payments
+-   [Node.js >=10.0.0](https://nodejs.org/en/download/) and [Git](https://git-scm.com/downloads) for running the app locally
+-   The PaymentRequest Stripe Element requires that the application be served over https both in development and production.
+    -   You can install and use [ngrok](https://dashboard.ngrok.com/signup) for enabling a secure connection to your local server.
+    -   Apple Pay requires the [verification and registration of your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
+        -   You can create a free account and easily deploy your app to [Heroku](https://signup.heroku.com/) to get a dedicated secure domain.
+        -   Alternatively, ngrok offers a paid version which will allow you to have to a dedicated secure domain that can be verified and registered to test the Apple Pay intergration during development.
 
 ### OPTION 1 - Deploy the App to Heroku
 
@@ -40,36 +39,47 @@ The following sections on this page list the options for deploying and using the
 
 4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay). Since this is a demo app, you can skip step #2 (Download Verification File) when you click 'Add a new domain' on the [Apple Pay tab](https://dashboard.stripe.com/settings/payments/apple_pay) of your Stripe Dashboard.
 
-###  OPTION 2 - Running the App Locally
+### OPTION 2 - Running the App Locally
 
 The following steps will guide you through the setup of this app on your local machine
 
-1. Clone this repostory using the following command  on the terminal of your choice 
-``` 
+1. Clone this repostory using the following command on the terminal of your choice
+
+```
 git clone https://github.com/abychat/bookshop-with-checkout-node.git
 ```
+
 2. Change to the project directory
+
 ```
 cd bookshop-with-checkout-node
 ```
+
 3. Install all project dependencies by executing
+
 ```
 npm install
 ```
+
 4. Create a copy of the .env.example file and supply all the required test API keys as well as other configuration parameters. The .env file is included in the .gitignore file and is not pushed to your repository.
+
 ```
 cp .env.example .env
 ```
+
 5. Start the application by executing
-``` 
+
+```
 npm start
 ```
+
 6. If you have installed ngrok and want to access the app via a secure url, open a new terminal or command prompt window and run ngrok command in the format
-[location of ngrok install]/ngrok [PORT specified in .env]. The secure 'Forwarding URL' in the output can be used to access the app over a secure url.
+   [location of ngrok install]/ngrok [PORT specified in .env]. The secure 'Forwarding URL' in the output can be used to access the app over a secure url.
+
 ```
 ***Example command***:  ./ngrok 3000
 
-***Example Output***: 
+***Example Output***:
 ngrok by @inconshreveable
 
 Tunnel Status                 online
@@ -84,7 +94,7 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
 
 7. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
 
-8. Navigate to http://localhost: <PORT> (port specified in .env) or the ngrok secure URL on your browser to verify that the application is up and running. 
+8. Navigate to http://localhost: <PORT> (port specified in .env) or the ngrok secure URL on your browser to verify that the application is up and running.
 
 ## Using the App
 
@@ -92,7 +102,6 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
 ![image](https://user-images.githubusercontent.com/7586106/124686506-1be76480-de88-11eb-9b82-13ba98058a84.png)
 ![image](https://user-images.githubusercontent.com/7586106/124686514-1ee25500-de88-11eb-8867-1b809db74e13.png)
 ![image](https://user-images.githubusercontent.com/7586106/124686519-230e7280-de88-11eb-984f-4d0ae8e44d15.png)
-
 
 DISCLAIMER - This is a learning/demo app and has been tested with [Stripe test data](https://stripe.com/docs/testing#cards) on Google Chrome, Safari, Microsoft Edge and Firefox. Do not deploy this app for use as a live site without a detailed code review and comprehensive testing.
 
