@@ -2,8 +2,9 @@
 
 ## Overview
 
-This is a node.js app that uses express.js, handelbars.js and Stripe Elements to host a fictitious bookshop wesbite. Users visiting the bookshop can browse all available books
-and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
+This is a node.js app that uses express.js, handelbars.js and Stripe Elements to host a fictitious bookshop wesbite. Users visiting the bookshop can browse all available books and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
+
+A live version of the site is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
 
 The following sections on this page list the options for deploying and using the app. Checkout the Github generated table of contents in the header of this README file to quickly navigate to different sections of the document.
 
@@ -37,7 +38,7 @@ The following sections on this page list the options for deploying and using the
 
 ![image](https://user-images.githubusercontent.com/7586106/124688613-eb092e80-de8b-11eb-9eca-f4253979507b.png)
 
-4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
+4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay). Since this is a demo app, you can skip step #2 (Download Verification File) when you click 'Add a new domain' on the [Apple Pay tab](https://dashboard.stripe.com/settings/payments/apple_pay) of your Stripe Dashboard.
 
 ###  OPTION 2 - Running the App Locally
 
