@@ -16,9 +16,9 @@ The following sections on this page list the options for deploying and using the
 
 ### Prerequisites
 
--   A modern browser like Chrome, Microsoft Edge, Firefox or Safari
--   A [free Stripe account](https://dashboard.stripe.com/register) to be able to process payments
--   [Node.js >=10.0.0](https://nodejs.org/en/download/) and [Git](https://git-scm.com/downloads) for running the app locally
+-   A modern browser like Chrome, Microsoft Edge, Firefox or Safari.
+-   A [free Stripe account](https://dashboard.stripe.com/register) to be able to process payments.
+-   [Node.js >=10.0.0](https://nodejs.org/en/download/) and [Git](https://git-scm.com/downloads) for running the app locally.
 -   The PaymentRequest Stripe Element requires that the application be served over https both in development and production.
     -   You can install and use [ngrok](https://dashboard.ngrok.com/signup) for enabling a secure connection to your local server.
     -   Apple Pay requires the [verification and registration of your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
