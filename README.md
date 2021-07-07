@@ -5,7 +5,10 @@
 This is a node.js app that uses express.js, handelbars.js and Stripe Elements to host a fictitious bookshop wesbite. Users visiting the bookshop can browse all available books
 and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
 
-The following sections on this page list the options for deploying and using the app. Use the Github generated table of contents in the header of this file to quickly navigate to different sections of the document.
+The following sections on this page list the options for deploying and using the app. Checkout the Github generated table of contents in the header of this file to quickly navigate to different sections of the document.
+
+![image](https://user-images.githubusercontent.com/7586106/124688002-f0b24480-de8a-11eb-8523-e3522a904c61.png)
+
 
 ## Running the App
 
