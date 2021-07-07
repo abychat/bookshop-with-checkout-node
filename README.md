@@ -124,5 +124,5 @@ I would also incorporate global payment methods like IBAN, iDEAL etc using Strip
 I would also look at using the Customer API to track customer profiles, billing information and payments. I though this would especially be useful when tracking any failed payments and avoiding creating multiple duplicate PaymentIntents for the same customer trying to pay for the same order. It would also help enable an authenticated experience for customers on the site. The Product and Price APIs would also be useful for managing a product catalog for the bookstore but at the same time I was thinking about how Stripe would integrate with other Product masters that have complex, multi currency, global price books. 
     
     
-###DISCLAIMER
+## DISCLAIMER
 This is a learning/demo app and has been tested with [Stripe test data](https://stripe.com/docs/testing#cards) on Google Chrome, Safari, Microsoft Edge and Firefox. Do not deploy this app for use as a live site without a detailed code review and comprehensive testing.
