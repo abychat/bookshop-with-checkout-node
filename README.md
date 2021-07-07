@@ -1,4 +1,4 @@
-# Using Stripe Elements for a seamless checkout experience
+# Using Stripe for a seamless checkout experience
 
 ## Overview
 
