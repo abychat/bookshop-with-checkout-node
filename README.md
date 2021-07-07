@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a node.js app that uses express.js, handlebars.js and Stripe Elements to host a fictitious bookshop website. Users visiting the bookshop can browse all available books and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
+This is a node.js app that uses express.js, handlebars.js and Stripe Elements to host a fictitious ecommerce bookstore. Users visiting the bookshop can browse all available books and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
 
 A live version of the site in test mode is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
 
