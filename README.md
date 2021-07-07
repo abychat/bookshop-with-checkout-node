@@ -4,7 +4,7 @@
 
 This is a node.js app that uses express.js, handlebars.js and Stripe Elements to host a fictitious bookshop website. Users visiting the bookshop can browse all available books and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft Pay depending on the browser they are using.
 
-A live version of the site is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
+A live version of the site in test mode is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
 
 The following sections on this page list the options for deploying and using the app. Checkout the Github generated table of contents in the header of this README file to quickly navigate to different sections of the document.
 
@@ -96,7 +96,10 @@ Connections                  ttl     opn     rt1     rt5     p50     p90
 
 8. Navigate to http://localhost: <PORT> (port specified in .env) or the ngrok secure URL on your browser to verify that the application is up and running.
 
-## Using the App
+## Solution Description
+The goal of creating the app was to use Stripe Elements to enable a checkout and confirmation experience for a ficititious e-commerce book store. The app uses the [Card](https://stripe.com/docs/stripe-js#card-elementhttps://stripe.com/docs/stripe-js#card-element) and [Payment Request Button](https://stripe.com/docs/stripe-js#payment-request-button-element) Stripe Elements to enable card payments as well as the ability to use digital wallet services like Apple Pay on Safari, Google Pay on Chrome or browser-saved cards using Microsoft Pay on Edge. The Payment Request Button Stripe Element uses the [Payment Request Web API](https://developer.mozilla.org/en-US/docs/Web/API/Payment_Request_API) and the checkout page indicates if your browser doesn't support the API (eg. Firefox) or if you don't have any saved cards for use with Microsoft Pay.
+
+The app use the [Stripe node.js library](https://www.npmjs.com/package/stripe) on the server side and Stripe.js library hosted by Stripe on the client side. When the user selects a book and clicks 'Purchase', they are redirected to the checkout page. At this point the app creates a new PaymentIntent on the server side using the ``stripe.paymentIntents.create`` library function and supplies this PaymentIntent to client side js functions. The client side js functions uses Stripe.js to create and mount the Card as well as Payment Request Button Stripe Elements (based on browser support or saved card availability) using the ``elements.create`` and ``element.mount`` functions. 
 
 ![image](https://user-images.githubusercontent.com/7586106/124686499-19850a80-de88-11eb-8dd6-aea89270231b.png)
 ![image](https://user-images.githubusercontent.com/7586106/124686506-1be76480-de88-11eb-9b82-13ba98058a84.png)
