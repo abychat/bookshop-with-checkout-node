@@ -7,7 +7,7 @@ and checkout using a credit card or by using Apple Pay, Google Pay or Microsoft 
 
 The following sections on this page list the options for deploying and using the app. Use the Github generated table of contents in the header of this file to quickly navigate to different sections of the document.
 
-## Running the app
+## Running the App
 
 ### Prerequisites
 * Node.js >=10.0.0
@@ -20,7 +20,7 @@ The following sections on this page list the options for deploying and using the
     - You can create a free account and easily deploy your app to [Heroku](https://signup.heroku.com/) to get a dedicated secure domain.
     - Alternatively, ngrok offers a paid version which will allow you to have to a dedicated secure domain that can be verified and registered to test the Apple Pay intergration during development.
 
-### OPTION 1 - Deploy the app to Heroku
+### OPTION 1 - Deploy the App to Heroku
 
 1. Click on the following button to deploy the app to Heroku
 
@@ -33,7 +33,7 @@ The following sections on this page list the options for deploying and using the
 3. Once the app is deployed, navigate to https://[app-name].herokuapp.com to verify that the app is up and running.
 4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
 
-###  OPTION 2 - Running the app locally
+###  OPTION 2 - Running the App Locally
 
 The following steps will guide you through the setup of this app on your local machine
 
@@ -81,7 +81,7 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
 ![image](https://user-images.githubusercontent.com/7586106/124682884-b93e9a80-de80-11eb-95e9-f906e7f1cb99.png)
 
 
-## Using the app
+## Using the App
 
 ![image](https://user-images.githubusercontent.com/7586106/124686499-19850a80-de88-11eb-8dd6-aea89270231b.png)
 ![image](https://user-images.githubusercontent.com/7586106/124686506-1be76480-de88-11eb-9b82-13ba98058a84.png)
@@ -91,6 +91,6 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
 
 DISCLAIMER - This is a learning/demo app and has been tested with [Stripe test data](https://stripe.com/docs/testing#cards) on Google Chrome, Safari, Microsoft Edge and Firefox. Do not deploy this app for use as a live site without a detailed code review and comprehensive testing.
 
-## Solution approach and experience building the app
+## Solution Approach and Experience Integrating Stripe
 
-## If this were a production app
+## If this were a Production App
