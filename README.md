@@ -13,10 +13,10 @@ The following sections on this page list the options for deploying and using the
 ## Running the App
 
 ### Prerequisites
-* Node.js >=10.0.0
+
 * A modern browser like Chrome, Microsoft Edge, Firefox or Safari
 * A [free Stripe account](https://dashboard.stripe.com/register) to be able to process payments
-* [Git](https://git-scm.com/downloads)
+* [Node.js >=10.0.0](https://nodejs.org/en/download/) and [Git](https://git-scm.com/downloads) for running the app locally
 * The PaymentRequest Stripe Element requires that the application be served over https both in development and production.
   + You can install and use [ngrok](https://dashboard.ngrok.com/signup) for enabling a secure connection to your local server.
   + Apple Pay requires the [verification and registration of your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
@@ -29,11 +29,14 @@ The following sections on this page list the options for deploying and using the
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/abychat/bookshop-with-checkout-node)
 
-2. Supply an app name for your demo app, the config variables and click on 'Deploy'.
+2. Supply an app name for your demo app, your test API keys, the remaining config variables and click on 'Deploy'.
 
 ![image](https://user-images.githubusercontent.com/7586106/124684702-96ae8080-de84-11eb-8061-b8b9c34a77db.png)
 
-3. Once the app is deployed, navigate to https://[app-name].herokuapp.com to verify that the app is up and running.
+3. Once the app is deployed, navigate to https://[app-name].herokuapp.com to verify that the app is up and running. You should see the following screen -
+
+![image](https://user-images.githubusercontent.com/7586106/124688613-eb092e80-de8b-11eb-9eca-f4253979507b.png)
+
 4. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
 
 ###  OPTION 2 - Running the App Locally
@@ -52,7 +55,7 @@ cd bookshop-with-checkout-node
 ```
 npm install
 ```
-4. Create a copy of the .env.example file and supply all the required API keys as well as other configuration parameters. The .env file is included in the .gitignore file and is not pushed to your repository.
+4. Create a copy of the .env.example file and supply all the required test API keys as well as other configuration parameters. The .env file is included in the .gitignore file and is not pushed to your repository.
 ```
 cp .env.example .env
 ```
@@ -80,9 +83,7 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
 
 7. If you want to test Apple Pay on Safari, [verify and register your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
 
-8. Navigate to http://localhost: <PORT> (port specified in .env) or the ngrok secure URL on your browser to verify that the application is up and running. You should see the following screen
-![image](https://user-images.githubusercontent.com/7586106/124682884-b93e9a80-de80-11eb-95e9-f906e7f1cb99.png)
-
+8. Navigate to http://localhost: <PORT> (port specified in .env) or the ngrok secure URL on your browser to verify that the application is up and running. 
 
 ## Using the App
 
