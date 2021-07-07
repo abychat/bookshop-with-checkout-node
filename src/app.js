@@ -201,9 +201,7 @@ app.get('/success', async function (req, res) {
              */
             res.render('success', {
                 amount: chargeAmount,
-                email: charge.receipt_email
-                    ? charge.receipt_email
-                    : charge.billing_details.email,
+                email: charge.receipt_email,
                 chargeId: charge.id,
                 receiptUrl: charge.receipt_url,
             });

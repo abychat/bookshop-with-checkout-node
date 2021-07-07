@@ -201,10 +201,11 @@ const createPaymentRequest = async (country, currency) => {
         pr.on('paymentmethod', async function (ev) {
             showPaymentMethods(false);
             const data = {
-                pi: payIntent,
+                pi: payIntent.id,
                 clientSecret,
                 email: ev.payerEmail,
             };
+            await updatePayIntent(data);
             const response = await stripe.confirmCardPayment(
                 clientSecret,
                 { payment_method: ev.paymentMethod.id },
