@@ -21,7 +21,7 @@ The following sections on this page list the options for deploying and using the
     -   You can install and use [ngrok](https://dashboard.ngrok.com/signup) for enabling a secure connection to your local server.
     -   Apple Pay requires the [verification and registration of your domain](https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay).
         -   You can create a free account and easily deploy your app to [Heroku](https://signup.heroku.com/) to get a dedicated secure domain.
-        -   Alternatively, ngrok offers a paid version which will allow you to have to a dedicated secure domain that can be verified and registered to test the Apple Pay intergration during development.
+        -   Alternatively, ngrok offers a paid version which will allow you to have to a dedicated secure domain that can be verified and registered to test the Apple Pay integration during development.
 
 ### OPTION 1 - Deploy the App to Heroku
 
