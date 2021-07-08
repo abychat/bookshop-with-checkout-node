@@ -195,9 +195,7 @@ app.get('/success', async function (req, res) {
             let chargeAmount = charge.amount_captured / 100;
 
             /**
-             * Render the success page with the charge id, email and receipt URL.
-             * Depending on the paymentMethod - card | paymentRequest, the user's email
-             * is retrieved either from the payment intent's metadata or billing details
+             * Render the success page with the charge id, email and receipt URL
              */
             res.render('success', {
                 amount: chargeAmount,
