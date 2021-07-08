@@ -6,7 +6,7 @@ This is a node.js app that uses express.js, handlebars.js and Stripe Elements to
 
 A live version of the site in test mode is deployed at - https://ac-bookshop-w-checkout.herokuapp.com/
 
-Please use [Stripe test data](https://stripe.com/docs/testing#cards) to experience the checkout process. The app has been tested for US based card payments.
+Please use [Stripe test data](https://stripe.com/docs/testing#cards) to experience the checkout process. The app has been tested for US based card payments and is best experienced on a desktop, laptop or tablet.
 
 The following sections on this page list the options for deploying and using the app as well as my experience integrating Stripe. Checkout the handy Github generated table of contents in the header of this README file to quickly navigate to different sections of the document.
 
